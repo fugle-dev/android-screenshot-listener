@@ -1,4 +1,4 @@
-package com.zhuanghongji.screenshot.lib;
+package com.zhuanghongji.screenshot.lib.listener.manager;
 
 import android.content.Context;
 import android.database.ContentObserver;
@@ -10,12 +10,15 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 /**
- * Created by zhuanghongji on 2018/5/13.
+ * the {@link IListenerManager} Impl.
+ * <br>It listens screenshot event by {@link ContentObserver}.
+ *
+ * @author zhuanghongji
  */
 
-public class ContentObserverManager implements IScreenshotManager{
+public class ContentObserverListenerManager implements IListenerManager {
 
-    private static final String TAG = "ContentObserverManager";
+    private static final String TAG = "ContentObserverListenerManager";
 
     private static final String HANDLER_THREAD_NAME = "Screenshot_Observer";
 
@@ -43,7 +46,9 @@ public class ContentObserverManager implements IScreenshotManager{
     private HandlerThread mHandlerThread;
     private Handler mHandler;
 
-    public ContentObserverManager(Context context) {
+    private IListenerManagerCallback mOnListenerManagerCallback;
+
+    public ContentObserverListenerManager(Context context) {
         mContext = context;
 
         mHandlerThread = new HandlerThread(HANDLER_THREAD_NAME);
@@ -76,6 +81,11 @@ public class ContentObserverManager implements IScreenshotManager{
     public void stopListen() {
         mContext.getContentResolver().unregisterContentObserver(mInternalObserver);
         mContext.getContentResolver().unregisterContentObserver(mExternalObserver);
+    }
+
+    @Override
+    public void setListenerManagerCallback(IListenerManagerCallback callback) {
+        mOnListenerManagerCallback = callback;
     }
 
     private void handleMediaContentChange(Uri contentUri) {
@@ -124,6 +134,9 @@ public class ContentObserverManager implements IScreenshotManager{
     private void handleMediaRowData(String data, long dateTaken) {
         if (checkScreenShot(data, dateTaken)) {
             Log.d(TAG, data + " " + dateTaken);
+            if (mOnListenerManagerCallback != null) {
+                mOnListenerManagerCallback.onScreenshot(data);
+            }
         } else {
             Log.d(TAG, "Not screenshot event");
         }

@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.view.View;
 
 /**
- * Created by zhuanghongji on 2018/5/13.
+ * Utils
+ *
+ * @author zhuanghongji
  */
 
 public class Utils {

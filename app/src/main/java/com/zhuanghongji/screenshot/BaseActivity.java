@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.zhuanghongji.screenshot.lib.ContentObserverManager;
+import com.zhuanghongji.screenshot.lib.OnScreenshotListener;
 import com.zhuanghongji.screenshot.lib.ScreenshotManager;
 
 /**
@@ -20,33 +20,27 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     private ScreenshotManager mScreenshotManager;
 
-    private ContentObserverManager mContentObserverManager;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mScreenshotManager = new ScreenshotManager(this);
-        mScreenshotManager.setOnScreenshotListener(new ScreenshotManager.OnScreenshotListener() {
+        mScreenshotManager.setOnScreenshotListener(new OnScreenshotListener() {
             @Override
-            public void onScreenshot(@Nullable String path) {
-                Log.d(TAG, "onScreenshot path = " + path);
+            public void onScreenshot(@Nullable String absolutePath) {
+                Log.d(TAG, "onScreenshot path = " + absolutePath);
             }
         });
-
-        mContentObserverManager = new ContentObserverManager(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mScreenshotManager.startListener();
-        mContentObserverManager.startListen();
+        mScreenshotManager.startListen();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mScreenshotManager.stopListener();
-        mContentObserverManager.stopListen();
+        mScreenshotManager.stopListen();
     }
 }

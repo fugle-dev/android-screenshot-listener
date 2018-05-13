@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.zhuanghongji.screenshot.lib.listener.manager.ContentObserverListenerManager;
 import com.zhuanghongji.screenshot.lib.listener.manager.FileObserverListenerManager;
@@ -91,11 +90,11 @@ public class ScreenshotManager {
         manager.setListenerManagerCallback(new IListenerManagerCallback() {
             @Override
             public void notifyScreenshotEvent(String listenerManagerName, @Nullable String absolutePath) {
-                Log.i(TAG, "listenerManagerName = " + listenerManagerName
-                        + ", absolutePath = " + absolutePath);
+                MLog.v("listenerManagerName = %s, absolutePath = %s",
+                        listenerManagerName, absolutePath);
 
                 if (TextUtils.isEmpty(absolutePath)) {
-                    Log.w(TAG, "there is something wrong because absolutePath is empty.");
+                    MLog.v("there is something wrong because absolutePath is empty.");
                     return;
                 }
                 if (mOnScreenshotListener != null
@@ -109,5 +108,9 @@ public class ScreenshotManager {
 
     public void setOnScreenshotListener(OnScreenshotListener onScreenshotListener) {
         mOnScreenshotListener = onScreenshotListener;
+    }
+
+    public static void enableLog(boolean enable) {
+        MLog.enableLog(enable);
     }
 }

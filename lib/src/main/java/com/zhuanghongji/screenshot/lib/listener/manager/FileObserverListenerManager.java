@@ -4,8 +4,8 @@ import android.os.Environment;
 import android.os.FileObserver;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
+import com.zhuanghongji.screenshot.lib.MLog;
 import com.zhuanghongji.screenshot.lib.OnScreenshotListener;
 
 import java.io.File;
@@ -114,9 +114,7 @@ public class FileObserverListenerManager implements IListenerManager {
             public void onEvent(int event, @Nullable final String path) {
                 final String desc = getEventDesc(event);
                 final String absolutePath = screenshotDir + File.separator + path;
-                Log.v(TAG, "event = " + event
-                        + ", desc = " + desc
-                        + ", absolutePath = " + absolutePath);
+                MLog.v("event = %s, desc = %s, absolutePath = %s", event, desc, absolutePath);
 
                 if (mScreenshotEvents.contains(event)) {
                     mHandler.post(new Runnable() {

@@ -23,11 +23,12 @@ public abstract class BaseActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenshotManager.enableLog(true);
         mScreenshotManager = new ScreenshotManager(this);
         mScreenshotManager.setOnScreenshotListener(new OnScreenshotListener() {
             @Override
             public void onScreenshot(@Nullable String absolutePath) {
-                Log.d(TAG, "onScreenshot path = " + absolutePath);
+                Log.d(TAG, "onScreenshot absolutePath = " + absolutePath);
             }
         });
     }

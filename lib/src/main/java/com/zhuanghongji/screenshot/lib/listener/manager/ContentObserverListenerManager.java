@@ -7,7 +7,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
-import android.util.Log;
+
+import com.zhuanghongji.screenshot.lib.MLog;
 
 /**
  * the {@link IListenerManager} Impl.
@@ -130,12 +131,12 @@ public class ContentObserverListenerManager implements IListenerManager {
      */
     private void handleMediaRowData(String data, long dateTaken) {
         if (checkScreenShot(data, dateTaken)) {
-            Log.d(TAG, data + " " + dateTaken);
+            MLog.v("data = %s, dateTaken = %s", data, dateTaken);
             if (mOnListenerManagerCallback != null) {
                 mOnListenerManagerCallback.notifyScreenshotEvent(HANDLER_THREAD_NAME, data);
             }
         } else {
-            Log.d(TAG, "Not screenshot event");
+            MLog.v("Not screenshot event");
         }
     }
 
@@ -169,7 +170,7 @@ public class ContentObserverListenerManager implements IListenerManager {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            Log.d(TAG, mContentUri.toString());
+            MLog.v("mContentUri = %s", mContentUri);
             handleMediaContentChange(mContentUri);
         }
     }

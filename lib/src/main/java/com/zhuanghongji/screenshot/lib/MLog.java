@@ -14,11 +14,11 @@ public class MLog {
 
     private static boolean isLogEnable = false;
 
-    public static void setLogEnableState(boolean isLogEnable) {
-        MLog.isLogEnable = isLogEnable;
+    static void enableLog(boolean enable) {
+        MLog.isLogEnable = enable;
     }
 
-    public static void log(String msg, Object... args) {
+    public static void v(String msg, Object... args) {
         if (!isLogEnable) {
             return;
         }

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.zhuanghongji.screenshot.lib.ContentObserverManager;
 import com.zhuanghongji.screenshot.lib.ScreenshotManager;
 
 /**
@@ -19,6 +20,8 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     private ScreenshotManager mScreenshotManager;
 
+    private ContentObserverManager mContentObserverManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,17 +32,21 @@ public abstract class BaseActivity extends AppCompatActivity{
                 Log.d(TAG, "onScreenshot path = " + path);
             }
         });
+
+        mContentObserverManager = new ContentObserverManager(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mScreenshotManager.startListener();
+        mContentObserverManager.startListen();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mScreenshotManager.stopListener();
+        mContentObserverManager.stopListen();
     }
 }

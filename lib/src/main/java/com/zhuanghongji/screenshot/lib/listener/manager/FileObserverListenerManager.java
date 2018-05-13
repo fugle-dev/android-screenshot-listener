@@ -21,7 +21,9 @@ import java.util.List;
 
 public class FileObserverListenerManager implements IListenerManager {
 
-    public static final String TAG = "FileObserverListenerManager";
+    private static final String TAG = "FileObserver";
+
+    private static final String LISTENER_MANAGER_NAME = "FileObserver";
 
     /**
      * it make the {@link OnScreenshotListener#onScreenshot(String)} execute on ui thread.
@@ -121,7 +123,8 @@ public class FileObserverListenerManager implements IListenerManager {
                         @Override
                         public void run() {
                             if (mOnListenerManagerCallback != null) {
-                                mOnListenerManagerCallback.onScreenshot(absolutePath);
+                                mOnListenerManagerCallback.notifyScreenshotEvent(
+                                        LISTENER_MANAGER_NAME, absolutePath);
                             }
                         }
                     });

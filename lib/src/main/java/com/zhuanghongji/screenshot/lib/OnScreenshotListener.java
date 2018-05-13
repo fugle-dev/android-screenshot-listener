@@ -15,5 +15,4 @@ public interface OnScreenshotListener{
      * @param absolutePath the absolutePath of screenshot image file
      */
     void onScreenshot(@Nullable String absolutePath);
-
 }

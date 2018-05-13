@@ -18,9 +18,9 @@ import android.util.Log;
 
 public class ContentObserverListenerManager implements IListenerManager {
 
-    private static final String TAG = "ContentObserverListenerManager";
+    private static final String TAG = "ContentObserver";
 
-    private static final String HANDLER_THREAD_NAME = "Screenshot_Observer";
+    private static final String HANDLER_THREAD_NAME = "ContentObserver";
 
     private Context mContext;
 
@@ -43,24 +43,21 @@ public class ContentObserverListenerManager implements IListenerManager {
     /** 外部存储器内容观察者 */
     private ContentObserver mExternalObserver;
 
-    private HandlerThread mHandlerThread;
-    private Handler mHandler;
-
     private IListenerManagerCallback mOnListenerManagerCallback;
 
     public ContentObserverListenerManager(Context context) {
         mContext = context;
 
-        mHandlerThread = new HandlerThread(HANDLER_THREAD_NAME);
-        mHandlerThread.start();
+        HandlerThread handlerThread = new HandlerThread(HANDLER_THREAD_NAME);
+        handlerThread.start();
 
-        mHandler = new Handler(mHandlerThread.getLooper());
+        Handler handler = new Handler(handlerThread.getLooper());
 
         // 初始化
         mInternalObserver = new MediaContentObserver(
-                MediaStore.Images.Media.INTERNAL_CONTENT_URI, mHandler);
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI, handler);
         mExternalObserver = new MediaContentObserver(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mHandler);
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, handler);
     }
 
     @Override
@@ -135,7 +132,7 @@ public class ContentObserverListenerManager implements IListenerManager {
         if (checkScreenShot(data, dateTaken)) {
             Log.d(TAG, data + " " + dateTaken);
             if (mOnListenerManagerCallback != null) {
-                mOnListenerManagerCallback.onScreenshot(data);
+                mOnListenerManagerCallback.notifyScreenshotEvent(HANDLER_THREAD_NAME, data);
             }
         } else {
             Log.d(TAG, "Not screenshot event");
@@ -146,8 +143,8 @@ public class ContentObserverListenerManager implements IListenerManager {
      * 判断是否是截屏
      */
     private boolean checkScreenShot(String data, long dateTaken) {
-
         data = data.toLowerCase();
+
         // 判断图片路径是否含有指定的关键字之一, 如果有, 则认为当前截屏了
         for (String keyWork : KEYWORDS) {
             if (data.contains(keyWork)) {
@@ -164,7 +161,7 @@ public class ContentObserverListenerManager implements IListenerManager {
 
         private Uri mContentUri;
 
-        public MediaContentObserver(Uri contentUri, Handler handler) {
+        MediaContentObserver(Uri contentUri, Handler handler) {
             super(handler);
             mContentUri = contentUri;
         }

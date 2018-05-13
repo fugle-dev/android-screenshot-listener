@@ -13,8 +13,8 @@ import android.support.annotation.Nullable;
 public interface IListenerManagerCallback {
 
     /**
+     * @param listenerManagerName the ListenManager which catch screenshot event first
      * @param absolutePath the absolutePath of screenshot image file
      */
-    void onScreenshot(@Nullable String absolutePath);
-
+    void notifyScreenshotEvent(String listenerManagerName, @Nullable String absolutePath);
 }

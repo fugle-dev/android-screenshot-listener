@@ -1,13 +1,11 @@
-package com.zhuanghongji.screenshot.lib;
+package com.zhuanghongji.screenshot;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.view.View;
 
 /**
- * Utils
- *
- * @author zhuanghongji
+ * Created by zhuanghongji on 2018/5/13.
  */
 
 public class Utils {

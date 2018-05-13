@@ -3,6 +3,8 @@ package com.zhuanghongji.screenshot.lib;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.zhuanghongji.screenshot.lib.listener.manager.ContentObserverListenerManager;
 import com.zhuanghongji.screenshot.lib.listener.manager.FileObserverListenerManager;
@@ -25,18 +27,20 @@ public class ScreenshotManager {
 
     private static final String TAG = "ScreenshotManager";
 
-    private Context mContext;
+    private FileObserverListenerManager mFileObserverListenerManager;
 
     private List<IListenerManager> mListenerManagers;
 
     private OnScreenshotListener mOnScreenshotListener;
 
+    private String mAbsolutePathOfLastScreenshot;
+
     public ScreenshotManager(Context context) {
-        mContext = context;
         mListenerManagers = new ArrayList<>();
 
-        addCustomListenerManager(new FileObserverListenerManager());
-        addCustomListenerManager(new ContentObserverListenerManager(mContext));
+        mFileObserverListenerManager = new FileObserverListenerManager();
+        addCustomListenerManager(mFileObserverListenerManager);
+        addCustomListenerManager(new ContentObserverListenerManager(context));
     }
 
     /**
@@ -64,6 +68,17 @@ public class ScreenshotManager {
     }
 
     /**
+     * if you want to listen dir witch didn't add in
+     * {@link FileObserverListenerManager#initScreenshotDirectories()}, you can
+     * add it by this method.
+     *
+     * @param screenshotDir the dir you want to listen
+     */
+    public void addScreenshotDirectories(final String screenshotDir) {
+        mFileObserverListenerManager.addScreenshotDirectories(screenshotDir);
+    }
+
+    /**
      * if the listener implemented by {@link android.os.FileObserver} or
      * {@link android.database.ContentObserver} can not meet your requirements. you can
      * custom your own {@link IListenerManager} just like {@link FileObserverListenerManager} or
@@ -75,8 +90,17 @@ public class ScreenshotManager {
         mListenerManagers.add(manager);
         manager.setListenerManagerCallback(new IListenerManagerCallback() {
             @Override
-            public void onScreenshot(@Nullable String absolutePath) {
-                if (mOnScreenshotListener != null) {
+            public void notifyScreenshotEvent(String listenerManagerName, @Nullable String absolutePath) {
+                Log.i(TAG, "listenerManagerName = " + listenerManagerName
+                        + ", absolutePath = " + absolutePath);
+
+                if (TextUtils.isEmpty(absolutePath)) {
+                    Log.w(TAG, "there is something wrong because absolutePath is empty.");
+                    return;
+                }
+                if (mOnScreenshotListener != null
+                        && !absolutePath.equals(mAbsolutePathOfLastScreenshot)) {
+                    mAbsolutePathOfLastScreenshot = absolutePath;
                     mOnScreenshotListener.onScreenshot(absolutePath);
                 }
             }

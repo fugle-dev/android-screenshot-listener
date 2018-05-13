@@ -12,7 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zhuanghongji on 2018/5/13.
+ * the manager of screenshot.
+ * <p>
+ *     Please make sure you have the permission of reading external storage.
+ * <p/>
+ *
+ * @author zhuanghongji
  */
 
 public class ScreenshotManager {
@@ -21,10 +26,20 @@ public class ScreenshotManager {
 
     private Context mContext;
 
+    /**
+     * it make the {@link OnScreenshotListener#onScreenshot(String)} execute on ui thread.
+     */
     private Handler mHandler;
 
+    /**
+     * the collection of screenshot dir on most brand mobile-phone.
+     */
     private List<String> mScreenshotDirectories;
 
+    /**
+     * the collection of {@link FileObserver} witch you are listened
+     * and it's created by {@link #mScreenshotDirectories}.
+     */
     private List<FileObserver> mFileObservers;
 
     private OnScreenshotListener mOnScreenshotListener;
@@ -32,51 +47,60 @@ public class ScreenshotManager {
     public ScreenshotManager(Context context) {
         mContext = context;
         mHandler = new Handler();
-        initScreenshotDirectories();
-        initFileObservers();
-    }
-
-    private void initFileObservers() {
+        mScreenshotDirectories = new ArrayList<>();
         mFileObservers = new ArrayList<>();
-        for (String dir : mScreenshotDirectories) {
-            mFileObservers.add(new FileObserver(dir, FileObserver.ALL_EVENTS) {
-                @Override
-                public void onEvent(int event, @Nullable final String path) {
-                    Log.v(TAG, "event = " + event + ", path = " + path);
-                    if (event == FileObserver.CREATE) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (mOnScreenshotListener != null) {
-                                    mOnScreenshotListener.onScreenshot(path);
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        }
+        initScreenshotDirectories();
     }
 
     private void initScreenshotDirectories() {
-        mScreenshotDirectories = new ArrayList<>();
         File pictures = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         File sdCard = Environment.getExternalStorageDirectory();
 
         // common dir
         File screenshots = new File(pictures, "Screenshots");
-        mScreenshotDirectories.add(screenshots.getPath());
+        addScreenshotDirectories(screenshots.getPath());
 
         // common dir
         File screenCapture = new File(sdCard, "ScreenCapture");
-        mScreenshotDirectories.add(screenCapture.getPath());
+        addScreenshotDirectories(screenCapture.getPath());
 
         // xiaomi
         File xiaomi = new File(dcim, "Screenshots");
-        mScreenshotDirectories.add(xiaomi.getPath());
+        addScreenshotDirectories(xiaomi.getPath());
     }
 
+    /**
+     * if you want to listen dir witch didn't add in {@link #initScreenshotDirectories()}, you can
+     * add it by this method.
+     * @param screenshotDir the dir you want to listen
+     */
+    public void addScreenshotDirectories(final String screenshotDir) {
+        mScreenshotDirectories.add(screenshotDir);
+        mFileObservers.add(new FileObserver(screenshotDir, FileObserver.ALL_EVENTS) {
+            @Override
+            public void onEvent(int event, @Nullable final String path) {
+                final String absolutePath = screenshotDir + File.separator + path;
+                Log.v(TAG, "event = " + event + ", absolutePath = " + absolutePath);
+
+                if (event == FileObserver.CREATE) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mOnScreenshotListener != null) {
+                                mOnScreenshotListener.onScreenshot(absolutePath);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * Start listening for screenshots.
+     * Monitors the screenshot directories
+     */
     public void startListener() {
         for (FileObserver observer : mFileObservers) {
             observer.startWatching();
@@ -84,20 +108,12 @@ public class ScreenshotManager {
     }
 
     /**
-     * Start listening for screenshots.
-     * Monitors the screenshot directories
+     * Stop listening for screenshots.
      */
     public void stopListener() {
         for (FileObserver observer : mFileObservers) {
             observer.stopWatching();
         }
-    }
-
-    /**
-     * Stop listening for screenshots.
-     */
-    public void addScreenshotDirectories(String path) {
-
     }
 
     public List<String> getScreenshotDirectories() {
@@ -108,7 +124,15 @@ public class ScreenshotManager {
         mOnScreenshotListener = onScreenshotListener;
     }
 
+    /**
+     * the listener for listen screenshot event.
+     */
     public interface OnScreenshotListener {
-        void onScreenshot(@Nullable String path);
+
+        /**
+         * it will called if screenshot event happened.
+         * @param absolutePath the absolutePath of screenshot image file
+         */
+        void onScreenshot(@Nullable String absolutePath);
     }
 }

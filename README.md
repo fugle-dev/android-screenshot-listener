@@ -3,9 +3,9 @@
 a library that help you to listen the screenshot event on android.
 
 
-## structure
+## Structure
 
-example:
+Example:
 
 ```
 ├ app
@@ -16,7 +16,7 @@ example:
 └ ..
 ```
 
-library:
+Library:
 
 ```
 ├ lib
@@ -31,15 +31,15 @@ library:
 └ ..
 ```
 
-# how-to-use
+# How-to-use
 
-add the lib module code to your project:   
+Add the lib module code to your project:   
 
 ```java
   // in this way you can make maximum customization for you project.
 ```
 
-in most cases, you just need to use `ScreenshotManager` to manage everything, as the following code:
+In most cases, you just need to use `ScreenshotManager` to manage everything, as the following code:
 
 ```java
 public abstract class BaseActivity extends AppCompatActivity{
@@ -75,12 +75,12 @@ public abstract class BaseActivity extends AppCompatActivity{
 }
 ```
 
-but sometimes the current code maybe not meet your requirements.  
+But sometimes the current code maybe not meet your requirements.  
 
-don't worry, you can strengthen ScreenshotManager by its public method `addScreenshotDirectories()` and `addCustomListenerManager()`.
+Don't worry, you can strengthen ScreenshotManager by its public method `addScreenshotDirectories()` and `addCustomListenerManager()`.
 
 
-# license
+# License
 
 ```
 Copyright 2018 zhuanghongji

@@ -1,40 +1,46 @@
-# android-screenshot-listen
-show how to listen the screenshot event on android
+# android-screenshot-listener
 
-# code-structure
-sample
+a library that help you to listen the screenshot event on android.
+
+
+## structure
+
+example:
+
 ```
-─ app
-├─ BaseActivity
-├─ MainActivity
-├─ SecondActivity
-├─ Utils
+├ app
+|  ├ BaseActivity
+|  ├ MainActivity
+|  ├ SecondActivity
+|  └ Utils
+└ ..
 ```
 
-library
+library:
+
 ```
-─ lib
-├── ContentObserverListenerManager
-├── FileObserverListenerManager
-├── IListenerManager
-├── IListenerManagerCallback
-├─ MLog
-├─ OnScreenshotListener
-├─ ScreenshotManager
+├ lib
+|  ├ manager
+|     ├ ContentObserverListenerManager
+|     ├ FileObserverListenerManager
+|     ├ IListenerManager
+|     └ IListenerManagerCallback
+|  ├ MLog
+|  ├ OnScreenshotListener
+|  └ ScreenshotManager
+└ ..
 ```
 
 # how-to-use
+
 add the lib module code to your project:   
+
 ```java
-  // in this way you can make maximum customization for you project
+  // in this way you can make maximum customization for you project.
 ```
 
-or just add the dependency in your `build.gradle`:
-```groovy
-  // TODO
-```
+in most cases, you just need to use `ScreenshotManager` to manage everything, as the following code:
 
-in most cases, you just need to use `ScreenshotManager` to manage everything, as the following code :
 ```java
 public abstract class BaseActivity extends AppCompatActivity{
 
@@ -73,10 +79,9 @@ but sometimes the current code maybe not meet your requirements.
 
 don't worry, you can strengthen ScreenshotManager by its public method `addScreenshotDirectories()` and `addCustomListenerManager()`.
 
-# todo
-complete the sample and optimize the lib code.
 
-# License
+# license
+
 ```
 Copyright 2018 zhuanghongji
 

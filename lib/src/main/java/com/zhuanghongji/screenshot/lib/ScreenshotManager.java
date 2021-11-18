@@ -2,8 +2,9 @@ package com.zhuanghongji.screenshot.lib;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
 
 import com.zhuanghongji.screenshot.lib.listener.manager.ContentObserverListenerManager;
 import com.zhuanghongji.screenshot.lib.listener.manager.FileObserverListenerManager;
@@ -45,7 +46,7 @@ public class ScreenshotManager {
     /**
      * start the listener for listening screenshots.
      * <p>
-     *     you can call it when activity {@link Activity#onResume()}
+     * you can call it when activity {@link Activity#onResume()}
      * </p>
      */
     public void startListen() {
@@ -57,7 +58,7 @@ public class ScreenshotManager {
     /**
      * stop the listener for listening screenshots.
      * <p>
-     *     you can call it when activity {@link Activity#onPause()}
+     * you can call it when activity {@link Activity#onPause()}
      * </p>
      */
     public void stopListen() {
@@ -98,6 +99,7 @@ public class ScreenshotManager {
                     return;
                 }
                 if (mOnScreenshotListener != null
+                        && absolutePath != null
                         && !absolutePath.equals(mAbsolutePathOfLastScreenshot)) {
                     mAbsolutePathOfLastScreenshot = absolutePath;
                     mOnScreenshotListener.onScreenshot(absolutePath);

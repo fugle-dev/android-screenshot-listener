@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
-import androidx.annotation.Nullable;
-
 import com.zhuanghongji.screenshot.lib.listener.manager.ContentObserverListenerManager;
 import com.zhuanghongji.screenshot.lib.listener.manager.FileObserverListenerManager;
 import com.zhuanghongji.screenshot.lib.listener.manager.IListenerManager;
-import com.zhuanghongji.screenshot.lib.listener.manager.IListenerManagerCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,9 +85,8 @@ public class ScreenshotManager {
      */
     public void addCustomListenerManager(IListenerManager manager) {
         mListenerManagers.add(manager);
-        manager.setListenerManagerCallback(new IListenerManagerCallback() {
-            @Override
-            public void notifyScreenshotEvent(String listenerManagerName, @Nullable String absolutePath) {
+        manager.setListenerManagerCallback((listenerManagerName, absolutePath) -> {
+            try {
                 MLog.d("listenerManagerName = %s, absolutePath = %s",
                         listenerManagerName, absolutePath);
 
@@ -98,12 +94,23 @@ public class ScreenshotManager {
                     MLog.d("there is something wrong because absolutePath is empty.");
                     return;
                 }
-                if (mOnScreenshotListener != null
-                        && absolutePath != null
-                        && !absolutePath.equals(mAbsolutePathOfLastScreenshot)) {
-                    mAbsolutePathOfLastScreenshot = absolutePath;
-                    mOnScreenshotListener.onScreenshot(absolutePath);
+
+                if (mOnScreenshotListener != null &&
+                        absolutePath != null &&
+                        !absolutePath.equals(mAbsolutePathOfLastScreenshot) &&
+                        absolutePath.length() > 10
+                ) {
+                    // 會回傳兩個不同的 uri，但指向同一個檔案，先簡單使用字串來判斷
+                    // /storage/emulated/0/Pictures/Screenshots/.pending-1637831837-Screenshot_20211118-171717.png
+                    // /storage/emulated/0/Pictures/Screenshots/Screenshot_20211118-171717.png
+                    String fileSubStr = absolutePath.substring(absolutePath.length() - 11, absolutePath.length() - 1);
+                    if (!fileSubStr.equals(mAbsolutePathOfLastScreenshot)) {
+                        mAbsolutePathOfLastScreenshot = fileSubStr;
+                        mOnScreenshotListener.onScreenshot(absolutePath);
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

@@ -3,7 +3,7 @@ package com.zhuanghongji.screenshot.lib.listener.manager;
 import android.os.Environment;
 import android.os.FileObserver;
 import android.os.Handler;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.zhuanghongji.screenshot.lib.MLog;
 import com.zhuanghongji.screenshot.lib.OnScreenshotListener;

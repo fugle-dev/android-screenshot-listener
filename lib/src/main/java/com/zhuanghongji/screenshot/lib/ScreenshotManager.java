@@ -2,7 +2,7 @@ package com.zhuanghongji.screenshot.lib;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.zhuanghongji.screenshot.lib.listener.manager.ContentObserverListenerManager;

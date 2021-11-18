@@ -1,6 +1,6 @@
 package com.zhuanghongji.screenshot.lib;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * the listener for listen screenshot event.

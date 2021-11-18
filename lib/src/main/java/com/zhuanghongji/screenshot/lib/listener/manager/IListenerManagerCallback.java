@@ -1,6 +1,6 @@
 package com.zhuanghongji.screenshot.lib.listener.manager;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * the callback for {@link IListenerManager} Impl to notify

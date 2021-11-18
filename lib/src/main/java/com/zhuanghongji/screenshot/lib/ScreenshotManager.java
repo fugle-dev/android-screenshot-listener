@@ -90,11 +90,11 @@ public class ScreenshotManager {
         manager.setListenerManagerCallback(new IListenerManagerCallback() {
             @Override
             public void notifyScreenshotEvent(String listenerManagerName, @Nullable String absolutePath) {
-                MLog.v("listenerManagerName = %s, absolutePath = %s",
+                MLog.d("listenerManagerName = %s, absolutePath = %s",
                         listenerManagerName, absolutePath);
 
                 if (TextUtils.isEmpty(absolutePath)) {
-                    MLog.v("there is something wrong because absolutePath is empty.");
+                    MLog.d("there is something wrong because absolutePath is empty.");
                     return;
                 }
                 if (mOnScreenshotListener != null

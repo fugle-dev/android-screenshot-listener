@@ -131,12 +131,12 @@ public class ContentObserverListenerManager implements IListenerManager {
      */
     private void handleMediaRowData(String data, long dateTaken) {
         if (checkScreenShot(data, dateTaken)) {
-            MLog.v("data = %s, dateTaken = %s", data, dateTaken);
+            MLog.d("data = %s, dateTaken = %s", data, dateTaken);
             if (mOnListenerManagerCallback != null) {
                 mOnListenerManagerCallback.notifyScreenshotEvent(HANDLER_THREAD_NAME, data);
             }
         } else {
-            MLog.v("Not screenshot event");
+            MLog.d("Not screenshot event");
         }
     }
 
@@ -170,7 +170,7 @@ public class ContentObserverListenerManager implements IListenerManager {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            MLog.v("mContentUri = %s", mContentUri);
+            MLog.d("mContentUri = %s", mContentUri);
             handleMediaContentChange(mContentUri);
         }
     }

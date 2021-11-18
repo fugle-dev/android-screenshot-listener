@@ -114,7 +114,7 @@ public class FileObserverListenerManager implements IListenerManager {
             public void onEvent(int event, @Nullable final String path) {
                 final String desc = getEventDesc(event);
                 final String absolutePath = screenshotDir + File.separator + path;
-                MLog.v("event = %s, desc = %s, absolutePath = %s", event, desc, absolutePath);
+                MLog.d("event = %s, desc = %s, absolutePath = %s", event, desc, absolutePath);
 
                 if (mScreenshotEvents.contains(event)) {
                     mHandler.post(new Runnable() {

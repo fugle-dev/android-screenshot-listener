@@ -18,11 +18,11 @@ public class MLog {
         MLog.isLogEnable = enable;
     }
 
-    public static void v(String msg, Object... args) {
+    public static void d(String msg, Object... args) {
         if (!isLogEnable) {
             return;
         }
         String message = String.format(msg, args);
-        Log.v(TAG, message);
+        Log.d(TAG, message);
     }
 }

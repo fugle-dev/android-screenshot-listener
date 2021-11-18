@@ -85,6 +85,7 @@ public class FileObserverListenerManager implements IListenerManager {
     }
 
     private void initScreenshotDirectories() {
+        // todo: 舊版 api 需要修改，修改後訪問外部 storage 需要權限
         File pictures = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         File sdCard = Environment.getExternalStorageDirectory();

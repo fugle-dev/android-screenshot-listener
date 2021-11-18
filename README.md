@@ -1,3 +1,11 @@
+# Fork 後更新
+
+* migrate to AndroidX
+* upgrade target sdk to 31(android 12)
+* update simple code
+* update ScreenshotManager.setOnScreenshotListener callback
+* add memo (some api Deprecated)
+
 # android-screenshot-listener
 
 a library that help you to listen the screenshot event on android.

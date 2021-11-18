@@ -4,11 +4,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.zhuanghongji.screenshot.lib.OnScreenshotListener;
 import com.zhuanghongji.screenshot.lib.ScreenshotManager;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
 
     final static String TAG = "MainActivity";
     ScreenshotManager screenshotManager;
@@ -17,6 +18,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ScreenshotManager.enableLog(true);
         screenshotManager = new ScreenshotManager(this);
         screenshotManager.setOnScreenshotListener(new OnScreenshotListener() {
             @Override

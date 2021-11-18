@@ -79,6 +79,7 @@ public class FileObserverListenerManager implements IListenerManager {
      * here we assume CLOSE_WRITE/CLOSE_NOWRITE event is screenshot event
      */
     private void initScreenshotEvents() {
+        mScreenshotEvents.add(FileObserver.CREATE);
         mScreenshotEvents.add(FileObserver.CLOSE_WRITE);
         mScreenshotEvents.add(FileObserver.CLOSE_NOWRITE);
     }
